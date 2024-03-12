@@ -5,7 +5,7 @@ JSON_PATH="/var/www/html/bilder.json"
 
 if [ "$1" == "remove" ]; then
     # Leeren der JSON-Datei, wenn der Stick entfernt wird
-    echo "{\"bilder\": [\"bild_1.jpg\"]}" > $JSON_PATH
+    echo "{\"bilder\": []}" > $JSON_PATH
     # Entfernen des Mount-Points
     umount $MOUNT_PATH
 else
