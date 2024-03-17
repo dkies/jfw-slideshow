@@ -18,7 +18,7 @@ else
     mkdir -p $MOUNT_PATH
     # mount for user www-data -> uid=33,gid=33
     mount "$DEVICE $MOUNT_PATH -o uid=33,gid=33,ro"
-    cd $MOUNT_PATH
+    cd $MOUNT_PATH || exit
     FILES=(*.jpg)
     echo "{\"bilder\": [" > $JSON_PATH
     for FILE in "${FILES[@]}"; do
@@ -27,5 +27,5 @@ else
     sed '$ s/,$/]}/' -i $JSON_PATH
 
     chown -R www-data:www-data $MOUNT_PATH/../
-    cd ~
+    cd ~ || exit
 fi
