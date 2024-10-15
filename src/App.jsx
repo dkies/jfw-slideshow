@@ -3,16 +3,28 @@ import { useState, useEffect } from "react";
 function App() {
   const [count, setCount] = useState(0); // Initializes `count` state
   const [bilder, setBilder] = useState(["images/PLATZHALTER.jpg"]);
+  const imageEndings = [".jpeg", ".jpg"]
+  const videoEndings = [".mp4", ".mov"]
+
+
+  useEffect(() => {
+    getData();
+  }, []);
 
   useEffect(() => {
     // Set up a timer to increment `count` every 5 seconds
     const timer = setInterval(() => {
-      setCount((prevCount) => (prevCount + 1) % bilder.length);
+      if (!isVideo(bilder[count])) {
+        updateCount();
+      }
       getData();
     }, 5000); // 5000 milliseconds = 5 seconds
     // Clean up the timer when the component unmounts or before rerunning the effect
     return () => clearInterval(timer);
   });
+
+  const updateCount = () => setCount((prevCount) => (prevCount + 1) % bilder.length);
+  
 
   async function getData() {
     fetch("./bilder.json")
@@ -31,23 +43,33 @@ function App() {
       });
   }
 
+  const isImage = (url) => {
+    return imageEndings.some((ending) => url.toLowerCase().endsWith(ending))
+  }
+
+  const isVideo = (url) => {
+    return videoEndings.some((ending) => url.toLowerCase().endsWith(ending))
+  }
+
   return (
     <div className="bg-fire w-full h-screen flex flex-col items-center">
-      <div className="h-1/6 flex items-center flex-col justify-center w-full">
-        <h1 className="font-sans font-bold text-6xl text-blue-600 align-middle">
-          Jugendfeuerwehr Karlsbad
-        </h1>
-        <h2 className="font-sans font-bold text-5xl text-blue-600 align-middle">
-          Abteilung Langensteinbach
-        </h2>
-      </div>
-      <div className="h-5/6 items-center">
+        { isImage(bilder[count]) && (
         <img
           className="object-scale-down h-full w-screen p-6"
           src={bilder[count]}
           alt="Display"
         ></img>
-      </div>
+        )}
+        { isVideo(bilder[count]) && (
+        <video
+          className="object-scale-down h-full w-screen p-6"
+          autoPlay="true"
+          muted={true}
+          onEnded={updateCount}
+          >
+          <source src={bilder[count]} />
+        </video>
+        )}
     </div>
   );
 }
