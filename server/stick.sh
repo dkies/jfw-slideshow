@@ -17,7 +17,7 @@ else
     DEVICE=$(lsblk -rpo "name,type" | awk '$2=="part" {print $1}' | head -1)
     mkdir -p $MOUNT_PATH
     # mount for user www-data -> uid=33,gid=33
-    mount "$DEVICE $MOUNT_PATH -o uid=33,gid=33,ro"
+    mount $DEVICE $MOUNT_PATH -o uid=33,gid=33
     cd $MOUNT_PATH || exit
     echo "{\"bilder\": [" > $JSON_PATH
     
