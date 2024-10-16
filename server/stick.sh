@@ -10,6 +10,7 @@ if [ "$1" == "remove" ]; then
     echo "... now try to unmont the stick." >> $LOG_PATH
     # Leeren der JSON-Datei, wenn der Stick entfernt wird
     echo "{\"bilder\": []}" > $JSON_PATH
+    sleep 5
     # Entfernen des Mount-Points
     umount $MOUNT_PATH
 else
