@@ -21,8 +21,8 @@ else
     cd $MOUNT_PATH || exit
     echo "{\"bilder\": [" > $JSON_PATH
     
-    find . -type f -iregex '.*\.\(jpg\|jpeg\|mov\|mp4\)' | while read -r file; do
-        echo "\"images/$FILE\"," >> $JSON_PATH
+    find . -type f -iregex '\./[^.].*\.\(jpg\|jpeg\|mov\|mp4\)' | while read -r file; do
+        echo "\"images/$file\"," >> $JSON_PATH
     done
 
     sed '$ s/,$/]}/' -i $JSON_PATH
